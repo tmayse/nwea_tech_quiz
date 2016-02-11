@@ -1,0 +1,39 @@
+# default config /etc/nginx/nginx.conf
+
+worker_processes 1;
+user nginx;
+
+events {}
+
+http {
+        index index.html;
+
+        server {
+                listen       {{ http_port }} default_server;
+                root /nginx ;
+         
+                client_body_buffer_size  2K;
+                client_header_buffer_size 2k;
+                client_max_body_size 2k;
+                large_client_header_buffers 2 2k;
+
+                client_body_timeout   10;
+                client_header_timeout 10;
+                keepalive_timeout     5 5;
+                send_timeout          10;
+
+                ## Only allow these request methods ##
+                if ($request_method !~ ^(GET|HEAD|POST)$ ) {
+                 return 444;
+                }
+                  
+                location / {
+                        try_files $uri $uri/index.html $uri.html =404;
+                }
+         
+                location ~* \.(gif|jpg|jpeg|png|css|js)$ {
+                        expires max;
+                }
+        include /etc/nginx/conf.d/*.conf;
+        }
+}

@@ -1,0 +1,7 @@
+---
+- name: NWEA Tech Quiz
+  hosts: tech_quiz
+  become: yes
+
+  roles:
+    - tech_quiz

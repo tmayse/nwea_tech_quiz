@@ -1,0 +1,18 @@
+---
+# Port on which nginx will listen for http requests
+http_port: 8888
+
+# GitHub Repo from which sample index file will be pulled
+tech_quiz_repo: https://github.com/nwea-techops/tech_quiz.git
+
+# find correct version of the EPEL repository 
+# (Extra Packages for Enterprise Linux) for RHEL/CentOS.
+epel_release:
+  "4": 10
+  "5": 4
+  "6": 8
+  "7": 5
+
+epel_repo_url: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+
+epel_repo_gpg_key_url: "/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
