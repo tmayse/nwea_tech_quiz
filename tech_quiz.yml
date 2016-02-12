@@ -4,4 +4,6 @@
   become: yes
 
   roles:
+    - CentOS_Ansible_preparation
     - tech_quiz
+    - CentOS_SSH_and_HTTP_only
