@@ -1,0 +1,70 @@
+---
+  - name: set   sysctl values
+# Avoid a smurf attack
+    sysctl: name=net.ipv4.icmp_echo_ignore_broadcasts value=1 state=present
+
+# Turn on protection for bad icmp error messages state=present
+    sysctl: name=net.ipv4.icmp_ignore_bogus_error_responses value=1 state=present
+
+# Turn on syncookies for SYN flood attack protection state=present
+    sysctl: name=net.ipv4.tcp_syncookies value=1 state=present
+
+# Turn on and log spoofed, source routed, and redirect packets state=present
+    sysctl: name=net.ipv4.conf.all.log_martians value=1 state=present
+    sysctl: name=net.ipv4.conf.default.log_martians value=1 state=present
+
+# No source routed packets here state=present
+    sysctl: name=net.ipv4.conf.all.accept_source_route value=0 state=present
+    sysctl: name=net.ipv4.conf.default.accept_source_route value=0 state=present
+
+# Turn on reverse path filtering state=present
+    sysctl: name=net.ipv4.conf.all.rp_filter value=1 state=present
+    sysctl: name=net.ipv4.conf.default.rp_filter value=1 state=present
+
+# Make sure no one can alter the routing tables state=present
+    sysctl: name=net.ipv4.conf.all.accept_redirects value=0 state=present
+    sysctl: name=net.ipv4.conf.default.accept_redirects value=0 state=present
+    sysctl: name=net.ipv4.conf.all.secure_redirects value=0 state=present
+    sysctl: name=net.ipv4.conf.default.secure_redirects value=0 state=present
+
+# Don't act as a router state=present
+    sysctl: name=net.ipv4.ip_forward value=0 state=present
+    sysctl: name=net.ipv4.conf.all.send_redirects value=0 state=present
+    sysctl: name=net.ipv4.conf.default.send_redirects value=0 state=present
+
+# Turn on execshild state=present
+    sysctl: name=kernel.exec-shield value=1 state=present
+    sysctl: name=kernel.randomize_va_space value=1 state=present
+
+# Tune IPv6 state=present
+    sysctl: name=net.ipv6.conf.default.router_solicitations value=0 state=present
+    sysctl: name=net.ipv6.conf.default.accept_ra_rtr_pref value=0 state=present
+    sysctl: name=net.ipv6.conf.default.accept_ra_pinfo value=0 state=present
+    sysctl: name=net.ipv6.conf.default.accept_ra_defrtr value=0 state=present
+    sysctl: name=net.ipv6.conf.default.autoconf value=0 state=present
+    sysctl: name=net.ipv6.conf.default.dad_transmits value=0 state=present
+    sysctl: name=net.ipv6.conf.default.max_addresses value=1 state=present
+
+# Optimization for port usefor LBs state=present
+# Increase system file descriptor limit state=present
+    sysctl: name=fs.file-max value=65535 state=present
+
+# Allow for more PIDs (to reduce rollover problems); may break some programs 32768 state=present
+    sysctl: name=kernel.pid_max value=65536 state=present
+
+# Increase system IP port limits state=present
+    sysctl: name=net.ipv4.ip_local_port_range value=2000 65000 state=present
+
+# Increase TCP max buffer size setable using setsockopt() state=present
+    sysctl: name=net.ipv4.tcp_rmem value=4096 87380 8388608 state=present
+    sysctl: name=net.ipv4.tcp_wmem value=4096 87380 8388608 state=present
+
+# Increase Linux auto tuning TCP buffer limits state=present
+# min, default, and max number of bytes to use state=present
+# set max to at least 4MB, or higher if you use very high BDP paths state=present
+# Tcp Windows etc state=present
+    sysctl: name=net.core.rmem_max value=8388608 state=present
+    sysctl: name=net.core.wmem_max value=8388608 state=present
+    sysctl: name=net.core.netdev_max_backlog value=5000 state=present
+    sysctl: name=net.ipv4.tcp_window_scaling value=1 state=present reload=yes
+     
